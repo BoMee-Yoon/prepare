@@ -31,3 +31,7 @@ console.log(Object.getOwnPropertyDescriptor(oatmeal, 'viscosity'));
 - `key` 는 데코레이터를 적용할 속성 이름(문자열)
 - `descriptor` 는 해당 속성의 설명자 객체
 
+
+
+[참고문헌]
+- https://velog.io/@moggy/Javascript-%EC%9E%A5%EC%8B%9D%EC%9E%90decorator-%ED%8C%A8%ED%84%B4
