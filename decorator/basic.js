@@ -46,7 +46,7 @@ function readOnly(target, key, descriptor) {
 
 class Oatmeal extends Porridge {
   // 클래스 필드로 재정의
-  // @readOnly
+  @readOnly
   viscosity = 50;
   
   constructor(flavor) {
