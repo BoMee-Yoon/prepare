@@ -60,3 +60,61 @@ customer.count(customer.products, '🍋', customer.name);
 /*
 난 각각의 주문상품에 대한 통계를 만들고 싶어 
 */
+
+class Counter {
+  constructor(count) {
+    this._count = count;
+  }
+  inc(by = 0) {
+    console.log('inc');
+    return this._count += by;
+  }
+  dec(by = 0) {
+    console.log('dec');
+    return this._count -= by;
+  }
+  reset() {
+    console.log('reset')
+    return this._count = 0;
+  }
+}
+
+const decorator = {
+  actions: {
+    before: () => console.log('decorator before'),
+    after: () => console.log('decorator after'),
+  },
+  methods: []
+}
+
+const checkEmpty = (value) => {
+  if (!value) {
+    throw new Error('empty')
+  }
+  console.log(`${value} 👍`);
+  return value
+}
+
+const identity = self => self;
+
+const validation = {
+  actions: {
+    before: checkEmpty,
+    after: identity
+  },
+  methods: ['inc', 'dec']
+}
+
+const decorate = (decorator, obj) => new Proxy(obj, {
+  get(target, key) {
+    if (!decorator.methods.include(key)) {
+      return Reflect.get(...arguments)
+    }
+    const methodRef = target[key];
+    return (...capturedArgs) => {
+      const newArgs = decorator.actions?.before.call(target, ...capturedArgs);
+      const result = methodRef.call(target, ...[newArgs]);
+      return decorator.actions?.after.call(target, result);
+    }
+  }
+})
